@@ -7,8 +7,8 @@ import {
   Get,
   ParseIntPipe,
   Param,
-  Put,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { PlaylistsService } from './playlists.service';
@@ -27,25 +27,25 @@ export class PlaylistsController {
 
   @Get()
   findAll(@Request() req) {
-    return this.playlistsService.findAll(req.user.id);
+    return this.playlistsService.findAll(req.user);
   }
 
-  @Get('id')
+  @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    return this.playlistsService.findOne(id, req.user.id);
+    return this.playlistsService.findOne(id, req.user);
   }
 
-  @Put('id')
+  @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Request() req,
     @Body() dto: UpdatePlaylistDto,
   ) {
-    return this.playlistsService.update(id, dto, req.user.id);
+    return this.playlistsService.update(id, dto, req.user);
   }
 
-  @Delete('id')
+  @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number, @Request() req) {
-    return this.playlistsService.remove(id, req.user.id);
+    return this.playlistsService.remove(id, req.user);
   }
 }

@@ -1,4 +1,5 @@
 {
+  "exclude": ["node_modules", ".prisma", "dist", "**/src/generated/**"],
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -9,13 +10,17 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "src/*": ["./src/*"]
+    },
+    "allowJs": true
   }
 }
