@@ -20,6 +20,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { PlaylistResponseDto } from './dtos/playlist-response.dto';
 
 @ApiBearerAuth()
 @ApiTags('Playlists')
@@ -31,7 +32,11 @@ export class PlaylistsController {
 
   @Post()
   @ApiOperation({ summary: 'Cria uma nova playlist' })
-  @ApiResponse({ status: 201, description: 'Playlist criada com sucesso' })
+  @ApiResponse({
+    status: 201,
+    description: 'Playlist criada com sucesso',
+    type: PlaylistResponseDto,
+  })
   @ApiResponse({ status: 401, description: 'Não Autorizado' })
   create(@Request() req, @Body() dto: CreatePlaylistDto) {
     return this.playlistsService.create(req.user.id, dto);
@@ -44,6 +49,7 @@ export class PlaylistsController {
   @ApiResponse({
     status: 200,
     description: 'Lista de playlists retornada com sucesso',
+    type: [PlaylistResponseDto],
   })
   findAll(@Request() req) {
     return this.playlistsService.findAll(req.user);
@@ -51,7 +57,11 @@ export class PlaylistsController {
 
   @Get(':id')
   @ApiOperation({ summary: 'Busca uma playlist pelo ID' })
-  @ApiResponse({ status: 200, description: 'Playlist retornada com sucesso' })
+  @ApiResponse({
+    status: 200,
+    description: 'Playlist retornada com sucesso',
+    type: PlaylistResponseDto,
+  })
   @ApiResponse({ status: 403, description: 'Acesso negado à playlist' })
   @ApiResponse({ status: 404, description: 'Playlist não encontrada' })
   findOne(@Param('id', ParseIntPipe) id: number, @Request() req) {
@@ -60,7 +70,11 @@ export class PlaylistsController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'Atualiza uma playlist pelo ID' })
-  @ApiResponse({ status: 200, description: 'Playlist atualizada com sucesso' })
+  @ApiResponse({
+    status: 200,
+    description: 'Playlist atualizada com sucesso',
+    type: PlaylistResponseDto,
+  })
   @ApiResponse({
     status: 400,
     description: 'Você não pode editar essa playlist',
@@ -76,7 +90,11 @@ export class PlaylistsController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Remove uma playlist pelo ID' })
-  @ApiResponse({ status: 200, description: 'Playlist removida com sucesso' })
+  @ApiResponse({
+    status: 200,
+    description: 'Playlist removida com sucesso',
+    type: PlaylistResponseDto,
+  })
   @ApiResponse({
     status: 403,
     description: 'Você não pode deletar essa playlist',

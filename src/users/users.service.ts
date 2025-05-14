@@ -10,20 +10,28 @@ export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async findByEmail(email: string) {
-    return this.usersRepository.findByEmail(email);
+    const user = await this.usersRepository.findByEmail(email);
+    return this.removePassword(user);
   }
 
   async create(data: CreateUserDto) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
-    return this.usersRepository.create({ ...data, password: hashedPassword });
+    const user = await this.usersRepository.create({
+      ...data,
+      password: hashedPassword,
+    });
+
+    return this.removePassword(user);
   }
 
   async findAll() {
-    return this.usersRepository.findAll();
+    const users = await this.usersRepository.findAll();
+    return users.map(this.removePassword);
   }
 
   async findOne(id: number) {
-    return this.usersRepository.findOne(id);
+    const user = await this.usersRepository.findOne(id);
+    return this.removePassword(user);
   }
 
   async update(id: number, data: UpdateUserDto) {
@@ -31,10 +39,19 @@ export class UsersService {
       data.password = await bcrypt.hash(data.password, 10);
     }
 
-    return this.usersRepository.update(id, data);
+    const user = await this.usersRepository.update(id, data);
+    return this.removePassword(user);
   }
 
   async remove(id: number) {
-    return this.usersRepository.remove(id);
+    const user = await this.usersRepository.remove(id);
+    return this.removePassword(user);
+  }
+
+  private removePassword(user: any) {
+    if (!user) return null;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...rest } = user;
+    return rest;
   }
 }

@@ -24,6 +24,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UserResponseDto } from './dtos/user-response.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -35,7 +36,11 @@ export class UsersController {
 
   @Post()
   @ApiOperation({ summary: 'Criar novo usuário' })
-  @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.' })
+  @ApiResponse({
+    status: 201,
+    description: 'Usuário criado com sucesso.',
+    type: UserResponseDto,
+  })
   @ApiBody({ type: CreateUserDto })
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -43,14 +48,22 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todos os usuários' })
-  @ApiResponse({ status: 200, description: 'Lista de usuários retornada.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuários, retornada.',
+    type: [UserResponseDto],
+  })
   findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Buscar usuário por ID' })
-  @ApiResponse({ status: 200, description: 'Usuário encontrado.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário encontrado.',
+    type: UserResponseDto,
+  })
   @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
@@ -58,7 +71,11 @@ export class UsersController {
 
   @Put(':id')
   @ApiOperation({ summary: 'Atualizar usuário por ID' })
-  @ApiResponse({ status: 200, description: 'Usuário atualizado com sucesso.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário atualizado com sucesso.',
+    type: UserResponseDto,
+  })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateUserDto })
   update(
@@ -70,7 +87,11 @@ export class UsersController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Remover usuário por ID' })
-  @ApiResponse({ status: 200, description: 'Usuário removido com sucesso.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Usuário removido com sucesso.',
+    type: UserResponseDto,
+  })
   @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.remove(id);
