@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import * as bcrypt from 'bcryptjs';
@@ -31,6 +31,9 @@ export class UsersService {
 
   async findOne(id: number) {
     const user = await this.usersRepository.findOne(id);
+    if (!user) {
+      throw new NotFoundException(`Usuário com ID ${id} não encontrado`);
+    }
     return this.removePassword(user);
   }
 

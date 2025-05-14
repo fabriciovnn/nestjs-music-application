@@ -72,4 +72,61 @@ describe('Users (e2e)', () => {
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThanOrEqual(1);
   });
+
+  let createdUserId: number;
+
+  it('/users (POST) - criar usuário para testes individuais', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/users')
+      .set('Authorization', `Bearer ${jwtToken}`)
+      .send({
+        name: 'User Test 2',
+        email: 'user2@test.com',
+        password: '12345',
+        role: 'USER',
+      });
+
+    expect(res.status).toBe(201);
+    createdUserId = res.body.id;
+
+    expect(res.body).toHaveProperty('id');
+    expect(res.body.email).toBe('user2@test.com');
+  });
+
+  it('/users/:id (GET) - buscar usuário pelo ID', async () => {
+    const res = await request(app.getHttpServer())
+      .get(`/users/${createdUserId}`)
+      .set('Authorization', `Bearer ${jwtToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('id', createdUserId);
+    expect(res.body).not.toHaveProperty('password');
+  });
+
+  it('/users/:id (PUT) - atualizar usuário', async () => {
+    const res = await request(app.getHttpServer())
+      .put(`/users/${createdUserId}`)
+      .set('Authorization', `Bearer ${jwtToken}`)
+      .send({ name: 'User Test Atualizado' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.name).toBe('User Test Atualizado');
+  });
+
+  it('/users/:id (DELETE) - remover usuário', async () => {
+    const res = await request(app.getHttpServer())
+      .delete(`/users/${createdUserId}`)
+      .set('Authorization', `Bearer ${jwtToken}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty('id', createdUserId);
+  });
+
+  it('/users/:id (GET) - usuário não encontrado após exclusão', async () => {
+    const res = await request(app.getHttpServer())
+      .get(`/users/${createdUserId}`)
+      .set('Authorization', `Bearer ${jwtToken}`);
+
+    expect(res.status).toBe(404);
+  });
 });

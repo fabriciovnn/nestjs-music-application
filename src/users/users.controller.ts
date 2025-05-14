@@ -64,6 +64,10 @@ export class UsersController {
     description: 'Usuário encontrado.',
     type: UserResponseDto,
   })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuário não encontrado',
+  })
   @ApiParam({ name: 'id', type: Number })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
