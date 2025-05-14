@@ -1,4 +1,51 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+  Body,
+  Get,
+  ParseIntPipe,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { PlaylistsService } from './playlists.service';
+import { CreatePlaylistDto } from './dtos/create-playlist.dto';
+import { UpdatePlaylistDto } from './dtos/update-playlist.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('playlists')
-export class PlaylistsController {}
+export class PlaylistsController {
+  constructor(private readonly playlistsService: PlaylistsService) {}
+
+  @Post()
+  create(@Request() req, @Body() dto: CreatePlaylistDto) {
+    return this.playlistsService.create(req.user.id, dto);
+  }
+
+  @Get()
+  findAll(@Request() req) {
+    return this.playlistsService.findAll(req.user.id);
+  }
+
+  @Get('id')
+  findOne(@Param('id', ParseIntPipe) id: number, @Request() req) {
+    return this.playlistsService.findOne(id, req.user.id);
+  }
+
+  @Put('id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Request() req,
+    @Body() dto: UpdatePlaylistDto,
+  ) {
+    return this.playlistsService.update(id, dto, req.user.id);
+  }
+
+  @Delete('id')
+  remove(@Param('id', ParseIntPipe) id: number, @Request() req) {
+    return this.playlistsService.remove(id, req.user.id);
+  }
+}
