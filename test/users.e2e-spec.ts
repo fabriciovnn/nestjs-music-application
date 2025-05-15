@@ -103,9 +103,9 @@ describe('Users (e2e)', () => {
     expect(res.body).not.toHaveProperty('password');
   });
 
-  it('/users/:id (PUT) - atualizar usuário', async () => {
+  it('/users/:id (PATCH) - atualizar usuário', async () => {
     const res = await request(app.getHttpServer())
-      .put(`/users/${createdUserId}`)
+      .patch(`/users/${createdUserId}`)
       .set('Authorization', `Bearer ${jwtToken}`)
       .send({ name: 'User Test Atualizado' });
 
