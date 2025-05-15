@@ -1,18 +1,21 @@
-version: '3.8'
-
 services:
   backend:
-    build: .
+    build:
+      context: .
+      args:
+        DATABASE_URL: 'postgresql://fabricio:postgres@db:5432/nestdb'
     container_name: nestjs-music-application
     ports:
       - '3000:3000'
     volumes:
-      - .:/app
+      - ./src:/app/src
       - /app/node_modules
     env_file:
       - .env
     depends_on:
       - db
+    command: sh -c "npx prisma migrate deploy && node dist/src/main"
+
   db:
     image: postgres:15
     container_name: nest_music_postgres
