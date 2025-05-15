@@ -14,7 +14,7 @@ services:
       - .env
     depends_on:
       - db
-    command: sh -c "npx prisma migrate deploy && node dist/src/main"
+    command: sh -c "npx prisma migrate deploy && npm run seed && node dist/src/main"
 
   db:
     image: postgres:15
