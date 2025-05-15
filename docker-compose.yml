@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  backend:
+    build: .
+    container_name: nestjs-music-application
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - db
   db:
     image: postgres:15
     container_name: nest_music_postgres
