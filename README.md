@@ -1,9 +1,16 @@
-Para rodar a aplicação:
+# Instruções para rodar a aplicação
 
+## Executar a aplicação
+
+```bash
 docker-compose up
+```
 
-Para acessar a documentação: [Documentação](http://localhost:3000/api)
+## Acessar a documentação
 
-Credenciais de usuario ADMIN:
-email: admin@admin.com
-password: admin
+[Documentação](http://localhost:3000/api)
+
+## Credenciais de Usuário ADMIN
+
+- **Email:** admin@admin.com
+- **Senha:** admin
