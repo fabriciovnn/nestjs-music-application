@@ -80,6 +80,10 @@ export class UsersController {
     description: 'Usuário atualizado com sucesso.',
     type: UserResponseDto,
   })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuário não encontrado',
+  })
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateUserDto })
   update(
@@ -95,6 +99,10 @@ export class UsersController {
     status: 200,
     description: 'Usuário removido com sucesso.',
     type: UserResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuário não encontrado',
   })
   @ApiParam({ name: 'id', type: Number })
   remove(@Param('id', ParseIntPipe) id: number) {

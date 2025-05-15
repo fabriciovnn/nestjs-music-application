@@ -11,6 +11,11 @@ export class UsersService {
 
   async findByEmail(email: string) {
     const user = await this.usersRepository.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException(
+        `Usuario com o email ${email} não encontrado`,
+      );
+    }
     return this.removePassword(user);
   }
 
@@ -38,6 +43,11 @@ export class UsersService {
   }
 
   async update(id: number, data: UpdateUserDto) {
+    const existing = await this.usersRepository.findOne(id);
+    if (!existing) {
+      throw new NotFoundException(`Usuário com o ID ${id} não encontrado`);
+    }
+
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
@@ -47,6 +57,11 @@ export class UsersService {
   }
 
   async remove(id: number) {
+    const existing = await this.usersRepository.findOne(id);
+    if (!existing) {
+      throw new NotFoundException(`Usuário com o ID ${id} não encontrado`);
+    }
+
     const user = await this.usersRepository.remove(id);
     return this.removePassword(user);
   }
