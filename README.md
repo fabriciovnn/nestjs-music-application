@@ -1,16 +1,16 @@
-# Instruções para rodar a aplicação
+## Desafio Backend Jr. Server Softwares
 
-## Executar a aplicação
+### Iniciando a aplicação:
 
-```bash
-docker-compose up
-```
+1. No terminal, execute:
+   docker compose up
 
-## Acessar a documentação
+2. Após o container iniciar:
+   [Acesse a documentação swagger da aplicação aqui](http://localhost:3000/api);
 
-[Documentação](http://localhost:3000/api)
-
-## Credenciais de Usuário ADMIN
-
-- **Email:** admin@admin.com
-- **Senha:** admin
+3. Realiza o login utilizando as seguintes credenciais neste [recurso](http://localhost:3000/api#/Autentica%C3%A7%C3%A3o/AuthController_login):
+   json
+   {
+   "email": "admin@admin.com",
+   "password": "admin"
+   }
